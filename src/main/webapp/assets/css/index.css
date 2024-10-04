@@ -1,0 +1,45 @@
+.search-section {
+  height: 400px;
+  border: 1px solid;
+}
+
+@font-face {
+  font-family: "양진체";
+  src: url("https://fastly.jsdelivr.net/gh/supernovice-lab/font@0.9/yangjin.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: "양진체", Arial, sans-serif;
+}
+
+.container1 {
+  display: flex;
+  margin-top: 5rem;
+}
+
+/* Autocomplete list styling */
+.autocomplete-items {
+  position: absolute;
+  border: 1px solid #ddd;
+  border-top: none;
+  z-index: 99;
+  /* Adjust size and position */
+  top: 100%;
+  left: 0;
+  right: 0;
+  max-height: 150px;
+  overflow-y: auto;
+  background-color: white;
+}
+
+.autocomplete-items div {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.autocomplete-items div:hover {
+  background-color: #ddd;
+}

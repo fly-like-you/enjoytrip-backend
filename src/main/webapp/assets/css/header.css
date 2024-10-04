@@ -1,0 +1,49 @@
+:root {
+  --header-height: 60px;
+}
+
+/* 헤더 설정 START */
+header {
+  height: var(--header-height);
+  box-shadow: 1px 2px 5px gray;
+}
+
+header nav {
+  display: flex;
+  justify-content: space-between;
+  height: 100%;
+}
+
+header .user-menu {
+  display: flex;
+}
+
+header a {
+  display: block;
+  height: 100%;
+  line-height: var(--header-height);
+}
+
+header .search-bar {
+  margin: auto 0;
+}
+/* 헤더 설정 END */
+
+.login-button,
+.join-button {
+  display: inline-block; /* a 태그를 블록처럼 다루기 위해 inline-block 사용 */
+  padding: 5px 10px; /* 버튼의 크기 조정 */
+  background-color: black; /* 배경색을 검정색으로 설정 */
+  color: white; /* 글자색을 흰색으로 설정 */
+  border-radius: 50px; /* 버튼을 둥글게 만들기 위해 border-radius를 높게 설정 */
+  text-align: center; /* 글자를 가운데로 정렬 */
+  text-decoration: none; /* 밑줄 제거 */
+  font-size: 13px; /* 글자 크기 조정 */
+  font-weight: bold; /* 글자 두께 조정 */
+  transition: background-color 0.3s ease; /* 마우스 호버 시 부드러운 색상 전환을 위해 추가 */
+}
+
+.login-button:hover,
+.join-button:hover {
+  background-color: #333; /* 마우스 호버 시 배경색을 조금 더 밝게 설정 */
+}

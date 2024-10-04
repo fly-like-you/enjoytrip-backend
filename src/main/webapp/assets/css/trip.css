@@ -1,0 +1,101 @@
+/* 전체 레이아웃 */
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #f8f9fa;
+}
+
+.container-fluid {
+    padding: 20px;
+}
+
+/* 왼쪽 사이드바: 계획 단계 */
+.list-group-item {
+    border: none;
+    padding: 15px 20px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.list-group-item.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.list-group-item:not(.active):hover {
+    background-color: #e9ecef;
+}
+
+/* 중간 사이드바: 관광지 검색 및 목록 */
+.form-control {
+    border-radius: 20px;
+    padding: 10px 15px;
+}
+
+.btn {
+    border-radius: 20px;
+    padding: 8px 15px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-outline-secondary {
+    color: #6c757d;
+    border-color: #6c757d;
+}
+
+/* 관광지 목록 아이템 */
+.list-group-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.list-group-item img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    margin-right: 15px;
+    border-radius: 8px;
+}
+
+.list-group-item h5 {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.list-group-item p {
+    margin-bottom: 5px;
+    color: #6c757d;
+}
+
+.list-group-item small {
+    color: #28a745;
+}
+
+/* 오른쪽 사이드바: 선택된 관광지 및 동선 계획 */
+#selected-places .list-group-item {
+    cursor: move;
+    background-color: #e9ecef;
+}
+
+#selected-places .list-group-item:hover {
+    background-color: #dee2e6;
+}
+
+/* 추가 버튼 스타일 */
+.btn-sm.btn-outline-primary {
+    padding: 2px 8px;
+    font-size: 0.875rem;
+}
+
+/* 반응형 디자인을 위한 미디어 쿼리 */
+@media (max-width: 768px) {
+    .col-md-2, .col-md-4, .col-md-6 {
+        margin-bottom: 20px;
+    }
+}

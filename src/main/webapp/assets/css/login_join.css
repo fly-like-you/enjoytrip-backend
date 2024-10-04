@@ -1,0 +1,32 @@
+.login-container,
+.join-container {
+  width: 1100px;
+  max-width: 100%;
+  margin: auto;
+  font-size: 12px;
+  color: gray;
+}
+@media (max-width: 767px) {
+  .login-container,
+  .join-container {
+    width: 80%; /* 767픽셀 이하에서는 컨테이너 너비를 90%로 설정 */
+    padding: 0 15px; /* 좌우에 적당한 패딩을 추가 */
+  }
+}
+
+.login-form {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn-info {
+  background-color: #5bc0de;
+  border-color: #5bc0de;
+}
+
+.btn-info:hover {
+  background-color: #31b0d5;
+  border-color: #31b0d5;
+}

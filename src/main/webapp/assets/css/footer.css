@@ -1,0 +1,16 @@
+:root {
+  --footer-height: 60px;
+}
+
+/* 푸터 설정 START */
+footer {
+  display: flex;
+  justify-content: center;
+  height: var(--footer-height);
+  box-shadow: 10px 20px 50px gray;
+}
+
+footer p {
+  line-height: var(--footer-height);
+}
+/* 푸터 설정 END */
