@@ -34,8 +34,7 @@ public class HelloController extends HttpServlet {
 
 
 	private String list(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
-		return "index2.jsp";
+		return "index.jsp";
 	}
 
 	private String view(HttpServletRequest request, HttpServletResponse response) {

@@ -49,4 +49,14 @@
     <servlet-name>AttractionController</servlet-name>
     <url-pattern>/AttractionController</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>TripController</display-name>
+    <servlet-name>TripController</servlet-name>
+    <servlet-class>com.ssafy.trip.controller.TripController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>TripController</servlet-name>
+    <url-pattern>/TripController</url-pattern>
+  </servlet-mapping>
 </web-app>
