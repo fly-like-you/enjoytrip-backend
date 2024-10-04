@@ -13,6 +13,8 @@ public interface PostDao {
 
     // Read
     PostsDto searchPostsAll();
+    
+    
 
     PostsDto findByMemberId(Integer memberId);
 
