@@ -4,4 +4,5 @@ import com.ssafy.attraction.model.AttractionsDto;
 
 public interface AttractionService {
 	AttractionsDto searchAttractionsAll();
+	AttractionsDto searchAttracionByAreaCode(Integer areaCode);
 }

@@ -48,7 +48,7 @@ function performSearch() {
   const matchedLocation = locations.find((location) => location.name.toLowerCase() === input);
 
   if (matchedLocation) {
-    window.location.href = `trip.html?id=${matchedLocation.id}`;
+    window.location.href = `trip?action=plan&id=${matchedLocation.id}`;
   } else {
     alert("검색어에 맞는 항목이 없습니다.");
   }

@@ -59,4 +59,24 @@
     <servlet-name>TripController</servlet-name>
     <url-pattern>/TripController</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>SpotController</display-name>
+    <servlet-name>SpotController</servlet-name>
+    <servlet-class>com.ssafy.spot.controller.SpotController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SpotController</servlet-name>
+    <url-pattern>/SpotController</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ReviewController</display-name>
+    <servlet-name>ReviewController</servlet-name>
+    <servlet-class>com.ssafy.review.controller.ReviewController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ReviewController</servlet-name>
+    <url-pattern>/ReviewController</url-pattern>
+  </servlet-mapping>
 </web-app>

@@ -1,3 +1,6 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<c:set var="root" value="${pageContext.request.contextPath}"></c:set>
 <!DOCTYPE html>
 <html lang="kr">
   <head>
@@ -33,7 +36,7 @@
         <section class="side-bar row" style="width: 1000px">
           <div class="col-md-2 d-none d-lg-block">
             <div class="list-group">
-              <a href="./index.html"
+              <a href="${root}/main"
                 ><img
                   class="mb-5 mt-3"
                   src="./assets/img/EnjoyTrip.png"
@@ -144,7 +147,7 @@
       </section>
     </main>
 
-    <div w3-include-html="footer.html"></div>
+    <%@ include file="/common/footer.jsp" %>
 
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

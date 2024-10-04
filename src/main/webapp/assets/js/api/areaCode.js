@@ -24,7 +24,7 @@ function createCard(areaData) {
     const content = `
     <div class="col">
       <div class="card h-100 border-0">
-        <a href="trip.html?id=${area.code}">
+        <a href="trip?action=plan&id=${area.code}">
           <img src="./assets/img/${area.code}.png" class="card-img-top" alt="${area.name}" />
         </a>
       </div>

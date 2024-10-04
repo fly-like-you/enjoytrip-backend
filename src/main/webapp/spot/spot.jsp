@@ -1,3 +1,8 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<c:set var="root" value="${pageContext.request.contextPath}"></c:set>
+
 <!DOCTYPE html>
 <html lang="kr">
   <head>
@@ -37,7 +42,7 @@
     </style>
   </head>
   <body>
-    <div w3-include-html="header.html"></div>
+    <%@ include file="/common/header.jsp" %>
     <main class="container-fluid">
       <section class="row">
         <form class="d-flex my-3" onsubmit="return false;" role="search">
@@ -87,7 +92,7 @@
       </section>
     </main>
 
-    <div w3-include-html="footer.html"></div>
+    <%@ include file="/common/footer.jsp" %>
 
     <script src="./assets/js/key.js"></script>
     <script

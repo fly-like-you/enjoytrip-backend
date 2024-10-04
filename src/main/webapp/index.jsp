@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<c:set var="root" value="${pageContext.request.contextPath}"></c:set>
 <!DOCTYPE html>
 <html lang="kr">
   <head>
@@ -15,7 +16,8 @@
   </head>
 
   <body>
-    <div w3-include-html="header.html"></div>
+    
+    <%@ include file="/common/header.jsp" %>
     <main>
       <section class="py-5 text-center">
         <div class="container">
@@ -52,7 +54,7 @@
         </div>
       </section>
     </main>
-    <div w3-include-html="footer.html"></div>
+    <%@ include file="/common/footer.jsp" %>
 
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -66,7 +68,6 @@
       crossorigin="anonymous"
     ></script>
     <script src="./assets/js/key.js"></script>
-    <script src="./assets/js/includeHTML.js"></script>
     <script src="./assets/js/index.js"></script>
     <script src="./assets/js/api/areaCode.js"></script>
   </body>

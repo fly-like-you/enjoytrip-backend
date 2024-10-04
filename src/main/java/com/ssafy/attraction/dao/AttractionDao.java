@@ -9,7 +9,7 @@ public interface AttractionDao {
 
 	AttractionDto searchAttractionById(Integer id);
 	AttractionsDto searchAttractionsByContentTypeId(Integer contentTypeId);
-
+	AttractionsDto searchAttractionsByAreacode(Integer areaCode);
 	AttractionsDto searchAttractionsAll();
 
 	void updateAttraction(AttractionDto attractionDto);

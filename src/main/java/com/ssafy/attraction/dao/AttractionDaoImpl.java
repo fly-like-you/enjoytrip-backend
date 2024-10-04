@@ -116,7 +116,40 @@ public class AttractionDaoImpl implements AttractionDao {
 
 		return attractionList;
 	}
+	
+	@Override
+	public AttractionsDto searchAttractionsByAreacode(Integer areaCode) {
+		String sql =
+				"SELECT no, title, addr1, content_type_id, first_image1, latitude, longitude\r\n"
+				+ "FROM attractions\r\n"
+				+ "WHERE area_code = ?";
+		AttractionsDto attractionList = new AttractionsDto();
 
+		try (
+				Connection conn = DBUtil.getInstance().getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql)
+		) {
+			pstmt.setInt(1, areaCode);
+
+			try (ResultSet rs = pstmt.executeQuery()) {
+				while (rs.next()) {
+					AttractionDto attractionDto = new AttractionDto();
+					attractionDto.setTitle(rs.getString("title"));
+					attractionDto.setAddr(rs.getString("addr1"));
+					attractionDto.setType(String.valueOf(rs.getInt("content_type_id")));
+					attractionDto.setImgUrl(rs.getString("first_image1"));
+					attractionDto.setLat(rs.getDouble("latitude"));
+					attractionDto.setLng(rs.getDouble("longitude"));
+
+					attractionList.addAttraction(attractionDto);  // 리스트에 AttractionDto 추가
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 
 	public AttractionsDto searchAttractionsAll() {
 	    String sql = 
@@ -192,6 +225,8 @@ public class AttractionDaoImpl implements AttractionDao {
 			e.printStackTrace();
 		}
 	}
+
+
 
 
 
