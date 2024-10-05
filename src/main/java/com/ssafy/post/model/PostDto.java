@@ -1,21 +1,22 @@
 package com.ssafy.post.model;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 public class PostDto {
-    private Integer id;
+    private Integer id; //
     private String author;
-    private Integer memberId;
-    private String title;
-    private String content;
-    private Date createdAt;
-    private Date updatedAt;
+    private Integer memberId; //
+    private String title;//
+    private String content; //
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
 
 
 
     public PostDto() {}
 
-    public PostDto(Integer memberId, String title, String content, Date createdAt, Date updatedAt) {
+    public PostDto(Integer memberId, String title, String content, Timestamp createdAt, Timestamp updatedAt) {
         this.memberId = memberId;
         this.title = title;
         this.content = content;
@@ -23,7 +24,7 @@ public class PostDto {
         this.updatedAt = updatedAt;
     }
 
-    public PostDto(Integer id, String title, String author, String content, Date createdAt, Date updatedAt) {
+    public PostDto(Integer id, String title, String author, String content, Timestamp createdAt, Timestamp updatedAt) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -32,7 +33,7 @@ public class PostDto {
         this.author = author;
     }
 
-    public PostDto(Integer id, Integer memberId, String title, String content, Date createdAt, Date updatedAt) {
+    public PostDto(Integer id, Integer memberId, String title, String content, Timestamp createdAt, Timestamp updatedAt) {
         this.id = id;
         this.memberId = memberId;
         this.title = title;
@@ -81,19 +82,19 @@ public class PostDto {
         this.content = content;
     }
 
-    public Date getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdatedAt() {
+    public Timestamp getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
 

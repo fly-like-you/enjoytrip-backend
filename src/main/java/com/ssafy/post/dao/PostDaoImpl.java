@@ -4,12 +4,7 @@ import com.ssafy.post.model.PostDto;
 import com.ssafy.post.model.PostSummariesDto;
 import com.ssafy.post.model.PostSummaryDto;
 import com.ssafy.post.model.PostsDto;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import util.DBUtil;
 
 public class PostDaoImpl implements PostDao {
@@ -23,21 +18,16 @@ public class PostDaoImpl implements PostDao {
 
     @Override
     public Integer createPost(PostDto postDto) {
-        String sql =
-                  "INSERT INTO posts(title, content, created_at, updated_at, member_id) \n"
-                + "VALUE (?, ?, ?, ?, ?);";
+        String sql = "INSERT INTO posts(title, content, created_at, member_id) VALUES (?, ?, ?, ?)";
+
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(
-                        sql,
-                        Statement.RETURN_GENERATED_KEYS
-                );
+            Connection conn = DBUtil.getInstance().getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
         ) {
             pstmt.setString(1, postDto.getTitle());
             pstmt.setString(2, postDto.getContent());
-            pstmt.setDate(3, postDto.getCreatedAt());
-            pstmt.setDate(4, postDto.getUpdatedAt());
-            pstmt.setInt(5, postDto.getMemberId());
+            pstmt.setTimestamp(3, postDto.getCreatedAt());
+            pstmt.setInt(4, postDto.getMemberId());
 
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows > 0) {
@@ -45,7 +35,6 @@ public class PostDaoImpl implements PostDao {
                     if (rs.next()) return rs.getInt(1);
                 }
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -62,21 +51,21 @@ public class PostDaoImpl implements PostDao {
 
         PostsDto posts = new PostsDto();
 
-        try (Connection conn = DBUtil.getInstance().getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
-
+        try (
+            Connection conn = DBUtil.getInstance().getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery()
+        ) {
             while (rs.next()) {
                 Integer id = rs.getInt("id");
-                String name = rs.getString("title");
+                String title = rs.getString("title");
                 String author = rs.getString("nickname");
                 String content = rs.getString("content");
-                Date createdAt = rs.getDate("created_at");
-                Date updatedAt = rs.getDate("updated_at");
+                Timestamp createdAt = rs.getTimestamp("created_at");
+                Timestamp updatedAt = rs.getTimestamp("updated_at");
 
-                posts.addPost(new PostDto(id, name, author, content, createdAt, updatedAt));
+                posts.addPost(new PostDto(id, title, author, content, createdAt, updatedAt));
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -95,32 +84,28 @@ public class PostDaoImpl implements PostDao {
         PostsDto posts = new PostsDto();
 
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql);
+            Connection conn = DBUtil.getInstance().getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)
         ) {
-            pstmt.setInt(1,  memberId);
+            pstmt.setInt(1, memberId);
 
-            try (
-                    ResultSet rs = pstmt.executeQuery();
-            ) {
+            try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
                     Integer id = rs.getInt("id");
                     String title = rs.getString("title");
                     String content = rs.getString("content");
                     String author = rs.getString("nickname");
-                    Date createAt = rs.getDate("created_at");
-                    Date updatedAt = rs.getDate("updated_at");
+                    Timestamp createdAt = rs.getTimestamp("created_at");
+                    Timestamp updatedAt = rs.getTimestamp("updated_at");
 
-                    posts.addPost(new PostDto(id, title, author, content, createAt, updatedAt));
+                    posts.addPost(new PostDto(id, title, author, content, createdAt, updatedAt));
                 }
-                return posts;
             }
-
-        }  catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return null;
+        return posts;
     }
 
     @Override
@@ -131,31 +116,25 @@ public class PostDaoImpl implements PostDao {
                 + "ON p.member_id = m.id\n"
                 + "WHERE p.id = ?";
 
-        PostDto posts = new PostDto();
-
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql);
+            Connection conn = DBUtil.getInstance().getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)
         ) {
-            pstmt.setInt(1,  postId);
+            pstmt.setInt(1, postId);
 
-            try (
-                    ResultSet rs = pstmt.executeQuery();
-            ) {
+            try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     Integer id = rs.getInt("id");
                     String title = rs.getString("title");
                     String content = rs.getString("content");
                     String author = rs.getString("nickname");
-                    Date createAt = rs.getDate("created_at");
-                    Date updatedAt = rs.getDate("updated_at");
+                    Timestamp createdAt = rs.getTimestamp("created_at");
+                    Timestamp updatedAt = rs.getTimestamp("updated_at");
 
-                    posts = new PostDto(id, title, author, content, createAt, updatedAt);
+                    return new PostDto(id, title, author, content, createdAt, updatedAt);
                 }
-                return posts;
             }
-
-        }  catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -166,20 +145,19 @@ public class PostDaoImpl implements PostDao {
     public void modifyPost(PostDto postDto) {
         String sql =
               "UPDATE posts\n"
-            + "SET title = ?,\n"
-            + "\tcontent = ?\n"
+            + "SET title = ?, content = ?, updated_at = ?\n"
             + "WHERE id = ?";
 
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql);
+            Connection conn = DBUtil.getInstance().getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)
         ) {
             pstmt.setString(1, postDto.getTitle());
             pstmt.setString(2, postDto.getContent());
-            pstmt.setInt(3, postDto.getId());
+            pstmt.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
+            pstmt.setInt(4, postDto.getId());
 
             pstmt.executeUpdate();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -187,18 +165,14 @@ public class PostDaoImpl implements PostDao {
 
     @Override
     public void deletePost(Integer postId) {
-        String sql =
-                "DELETE FROM posts\n"
-                        + "WHERE id = ?;";
+        String sql = "DELETE FROM posts WHERE id = ?";
 
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql);
+            Connection conn = DBUtil.getInstance().getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)
         ) {
             pstmt.setInt(1, postId);
-
             pstmt.executeUpdate();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -213,20 +187,20 @@ public class PostDaoImpl implements PostDao {
 
         PostSummariesDto postSummaries = new PostSummariesDto();
 
-        try (Connection conn = DBUtil.getInstance().getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
-
+        try (
+            Connection conn = DBUtil.getInstance().getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery()
+        ) {
             while (rs.next()) {
                 PostSummaryDto postSummary = new PostSummaryDto();
                 postSummary.setId(rs.getString("id"));
                 postSummary.setTitle(rs.getString("title"));
                 postSummary.setNickname(rs.getString("nickname"));
-                postSummary.setCreatedAt(rs.getDate("created_at"));
+                postSummary.setCreatedAt(null);
 
                 postSummaries.addPostSummary(postSummary);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -241,27 +215,26 @@ public class PostDaoImpl implements PostDao {
                 "INNER JOIN members m ON p.member_id = m.id " +
                 "WHERE p.id = ?";
 
-        PostSummaryDto postSummary = null;
-
-        try (Connection conn = DBUtil.getInstance().getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
+        try (
+            Connection conn = DBUtil.getInstance().getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)
+        ) {
             pstmt.setInt(1, postId);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    postSummary = new PostSummaryDto();
+                    PostSummaryDto postSummary = new PostSummaryDto();
                     postSummary.setId(rs.getString("id"));
                     postSummary.setTitle(rs.getString("title"));
                     postSummary.setNickname(rs.getString("nickname"));
-                    postSummary.setCreatedAt(rs.getDate("created_at"));
+                    postSummary.setCreatedAt(null);
+                    return postSummary;
                 }
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return postSummary;
+        return null;
     }
 
     @Override
@@ -273,9 +246,10 @@ public class PostDaoImpl implements PostDao {
 
         PostSummariesDto postSummaries = new PostSummariesDto();
 
-        try (Connection conn = DBUtil.getInstance().getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
+        try (
+            Connection conn = DBUtil.getInstance().getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)
+        ) {
             pstmt.setInt(1, memberId);
 
             try (ResultSet rs = pstmt.executeQuery()) {
@@ -284,18 +258,15 @@ public class PostDaoImpl implements PostDao {
                     postSummary.setId(rs.getString("id"));
                     postSummary.setTitle(rs.getString("title"));
                     postSummary.setNickname(rs.getString("nickname"));
-                    postSummary.setCreatedAt(rs.getDate("created_at"));
+                    postSummary.setCreatedAt(null);
 
                     postSummaries.addPostSummary(postSummary);
                 }
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
         return postSummaries;
     }
-
-
 }
