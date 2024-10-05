@@ -23,7 +23,7 @@ public class MemberDaoImpl implements MemberDao {
     @Override
     public Integer createMember(MemberDto memberDto) {
         String sql =
-                  "INSERT INTO members(user_id, name, nickname, password, email, joined_at, phone_number) \n"
+                  "INSERT INTO members(member_id, name, nickname, password, email, joined_at, phone_number) \n"
                 + "VALUE (?, ?, ?, ?, ?, ?, ?);";
         try (
                 Connection conn = DBUtil.getInstance().getConnection();
@@ -60,7 +60,7 @@ public class MemberDaoImpl implements MemberDao {
     @Override
     public List<MemberDto> searchMemberAll(){
     	String sql = 
-    			  "SELECT member_id, name, nickname, password,phone_number,email, joined_at "
+    			  "SELECT id, member_id, name, nickname, password,phone_number,email, joined_at "
     			+ "FROM members";
     	List<MemberDto> list = new ArrayList<>();
     	

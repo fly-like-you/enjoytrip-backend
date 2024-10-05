@@ -25,18 +25,20 @@ public class MemberDaoTest {
     }
 
     private static String 회원_생성하기() {
-        MemberDto member = new MemberDto(
-                "testuser",
-                "Test User",
-                "tester",
-                "password123",
-                1234567890,
-                "test@example.com",
-                new Date(System.currentTimeMillis())
-        );
+
+        MemberDto member = new MemberDto();
+        member.setId(1);
+        member.setUserId("testuser");
+        member.setName("Test User");
+        member.setNickname("tester");
+        member.setPassword("password123");
+        member.setEmail("test@example.com");
+        member.setPhone("1234567890");
+
+
         Integer result = memberDao.createMember(member);
         System.out.println("생성된 회원 ID: " + result);
-        return member.getMember_id();
+        return member.getUserId();
     }
 
     private static void 회원_모두_가져오기() {
@@ -72,7 +74,7 @@ public class MemberDaoTest {
             memberToUpdate.setName("김동현");
             memberToUpdate.setNickname("부산남자김동현");
             memberToUpdate.setPassword("newpassword123");
-            memberToUpdate.setPhone_number(1098765432);
+            memberToUpdate.setPhone("1098765432");
             memberToUpdate.setEmail("edwin.kim@gmail.com");
 
             memberDao.updateMember(memberToUpdate);

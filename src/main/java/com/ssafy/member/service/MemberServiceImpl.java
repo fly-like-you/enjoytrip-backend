@@ -3,18 +3,12 @@ package com.ssafy.member.service;
 import com.ssafy.member.dao.MemberDao;
 import com.ssafy.member.dao.MemberDaoImpl;
 import com.ssafy.member.model.MemberDto;
-import com.ssafy.member.model.service.MemberService;
-import com.ssafy.member.model.service.MemberServiceImpl;
-import com.ssafy.trip.service.TripService;
-import com.ssafy.trip.service.TripServiceImpl;
 
-import java.sql.SQLException;
-import java.util.List;
 
 public class MemberServiceImpl implements MemberService {
 	private static MemberService memberService = new MemberServiceImpl();
 	private MemberDao memberDao;
-	
+
 	private MemberServiceImpl() {
 		memberDao = MemberDaoImpl.getMemberDao();
 	}
@@ -30,7 +24,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public int joinMember(MemberDto memberDto) throws Exception {
-		return memberDao.joinMember(memberDto);
+		return memberDao.createMember(memberDto);
 	}
 
 	@Override

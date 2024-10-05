@@ -3,6 +3,8 @@ package com.ssafy.member.model;
 
 // 닉네임, 폰번호, 이메일, 가입일
 
+import java.sql.Date;
+
 public class MemberDto {
 	private Integer id;
 	private String userId;
@@ -12,8 +14,8 @@ public class MemberDto {
 	private String email;
 	private String joinDate;
 	private String phone;
-	
-	public Integer getId() {
+
+    public Integer getId() {
 		return id;
 	}
 	public void setId(Integer id) {
