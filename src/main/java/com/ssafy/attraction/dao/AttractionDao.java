@@ -12,9 +12,9 @@ public interface AttractionDao {
 	AttractionsDto searchAttractionsByAreacode(Integer areaCode);
 	AttractionsDto searchAttractionsAll();
 
+	AttractionsDto searchAttractions(int numOfRows, int pageNo, String areaCode, String contentTypeId);
+
 	void updateAttraction(AttractionDto attractionDto);
 
 	void deleteAttraction(Integer id);
-
-
 }

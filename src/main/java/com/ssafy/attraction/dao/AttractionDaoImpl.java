@@ -180,6 +180,69 @@ public class AttractionDaoImpl implements AttractionDao {
 
 	    return attractions;
 	}
+	public AttractionsDto searchAttractions(int numOfRows, int pageNo, String areaCode, String contentTypeId) {
+		AttractionsDto attractionsDto = new AttractionsDto();
+
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT content_id, title, addr1, addr2, content_type_id, first_image1, latitude, longitude ");
+		sql.append("FROM attractions ");
+		sql.append("WHERE 1=1 ");  // 기본 조건 (항상 참인 조건, 추가 조건과 연결할 때 사용)
+
+		// 조건이 있을 때만 쿼리에 추가
+		if (areaCode != null && !areaCode.isEmpty()) {
+			sql.append("AND area_code = ? ");
+		}
+		if (contentTypeId != null && !contentTypeId.isEmpty()) {
+			sql.append("AND content_type_id = ? ");
+		}
+
+		sql.append("LIMIT ?, ?");
+
+
+		// PreparedStatement 생성 및 파라미터 바인딩
+		try (Connection conn = DBUtil.getInstance().getConnection();
+			 PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
+
+			int paramIndex = 1; // PreparedStatement 파라미터 인덱스
+
+			// areaCode 파라미터가 있을 경우 바인딩
+			if (areaCode != null && !areaCode.isEmpty()) {
+				pstmt.setString(paramIndex++, areaCode);
+			}
+
+			// contentTypeId 파라미터가 있을 경우 바인딩
+			if (contentTypeId != null && !contentTypeId.isEmpty()) {
+				pstmt.setString(paramIndex++, contentTypeId);
+			}
+
+			// 페이지네이션 파라미터 바인딩 (시작 인덱스, 가져올 행 수)
+			pstmt.setInt(paramIndex++, (pageNo - 1) * numOfRows); // OFFSET
+			pstmt.setInt(paramIndex, numOfRows); // LIMIT
+
+			try (ResultSet rs = pstmt.executeQuery()) {
+				while (rs.next()) {
+					AttractionDto attractionDto = new AttractionDto();
+					attractionDto.setId(rs.getInt("content_id"));
+					attractionDto.setTitle(rs.getString("title"));
+					attractionDto.setAddr(rs.getString("addr1") + " " + rs.getString("addr2"));
+					attractionDto.setType(rs.getString("content_type_id"));
+					attractionDto.setImgUrl(rs.getString("first_image1"));
+					attractionDto.setLat(rs.getDouble("latitude"));
+					attractionDto.setLng(rs.getDouble("longitude"));
+
+					attractionsDto.getAttractions().add(attractionDto);
+				}
+				return attractionsDto;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+
+
 
 	public void updateAttraction(AttractionDto attractionDto) {
 		String sql =

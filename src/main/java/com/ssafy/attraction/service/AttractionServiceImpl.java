@@ -23,5 +23,10 @@ public class AttractionServiceImpl implements AttractionService{
 		return attractionDao.searchAttractionsByAreacode(areaCode);
 	}
 
+	@Override
+	public AttractionsDto searchAttractions(int numOfRows, int pageNo, String areaCode, String contentTypeId) {
+		return attractionDao.searchAttractions(numOfRows, pageNo, areaCode, contentTypeId);
+	}
+
 
 }
