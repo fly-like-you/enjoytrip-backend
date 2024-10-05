@@ -26,5 +26,6 @@ public interface MemberDao {
     
 	int idCheck(String userId) throws SQLException;
 	MemberDto loginMember(String userId, String userPwd) throws SQLException;
-	
+
+	int modify(MemberDto member);
 }

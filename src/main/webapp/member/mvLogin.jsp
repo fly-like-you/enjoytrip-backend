@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
-<c:set var="root" value="${pageContext.request.contextPath}"></c:set>
+<c:set var="root" value="${pageContext.request.contextPath}"/>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -19,21 +19,22 @@
     <div class="container login-container">
       <div class="row justify-content-center align-items-center min-vh-100">
         <div class="col-lg-4 col-md-6">
-          <form class="login-form">
+          <form class="login-form" method="POST" action="${root}/member">
+            <input type="hidden" name="action" value="login">
             <div class="logo-img mb-4">
-              <a href="index.html"><img src="./assets/img/EnjoyTrip.png" alt="" /></a>
+              <a href="${root}/main"><img src="./assets/img/EnjoyTrip.png" alt="" /></a>
             </div>
             <div class="mb-3">
-              <label for="email" class="form-label">이메일</label>
-              <input type="email" class="form-control" id="email" required />
+              <label for="member-id" class="form-label">아이디</label>
+              <input type="text" class="form-control" id="member-id" name="member-id" required />
             </div>
             <div class="mb-3">
               <label for="password" class="form-label">비밀번호</label>
-              <input type="password" class="form-control" id="password" required />
+              <input type="password" class="form-control" id="password" name="password" required />
             </div>
-            <button type="submit" class="btn btn-info w-100 text-white"">로그인</button>
+            <button type="submit" class="btn btn-info w-100 text-white">로그인</button>
             <div class="mt-3 text-center join">
-              <small>아직 회원이 아니신가요? <a href="join.html" class="text-info">회원가입</a></small>
+              <small>아직 회원이 아니신가요? <a href="${root}/member?action=mvJoin" class="text-info">회원가입</a></small>
             </div>
           </form>
         </div>

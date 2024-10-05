@@ -1,5 +1,6 @@
 package com.ssafy.trip.controller;
 
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
 import com.ssafy.attraction.model.AttractionsDto;
@@ -20,6 +21,8 @@ public class TripController extends HttpServlet {
     private TripService tripService = TripServiceImpl.getInstance();
     private AttractionService attractionService = AttractionServiceImpl.getInstance();
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		if (checkLogin(request, response)) return;
+
 		String action = request.getParameter("action");
 		
 		String path = "";
@@ -31,6 +34,15 @@ public class TripController extends HttpServlet {
 			default:
 				forward(request, response, "error.jsp");
 		}
+	}
+
+	private static boolean checkLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		HttpSession session = request.getSession(false);
+		if (session == null || session.getAttribute("member") == null) {
+			response.sendRedirect(request.getContextPath() + "/member?action=mvLogin");
+			return true;
+		}
+		return false;
 	}
 
 	private String plan(HttpServletRequest request, HttpServletResponse response) {

@@ -116,7 +116,7 @@ public class MemberDaoImpl implements MemberDao {
     
     @Override
     public MemberDto findById(String memberId) {
-        String sql = "SELECT * FROM members WHERE member_id = ?";
+        String sql = "SELECT * FROM members WHERE id = ?";
         try (Connection conn = DBUtil.getInstance().getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             
@@ -158,18 +158,88 @@ public class MemberDaoImpl implements MemberDao {
         }
     }
 
-	@Override
-	public int idCheck(String userId) throws SQLException {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    @Override
+    public int idCheck(String userId) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM members WHERE member_id = ?";
+
+        try (Connection conn = DBUtil.getInstance().getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, userId);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+        return 0;
+    }
+
 
 	@Override
 	public MemberDto loginMember(String userId, String userPwd) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+        String sql = "SELECT * FROM members WHERE member_id = ?";
+        try (Connection conn = DBUtil.getInstance().getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, userId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    MemberDto memberDto = new MemberDto();
+                    memberDto.setId(rs.getInt("id"));
+                    memberDto.setUserId(rs.getString("member_id"));
+                    memberDto.setName(rs.getString("name"));
+                    memberDto.setNickname(rs.getString("nickname"));
+                    memberDto.setPassword(rs.getString("password"));
+                    memberDto.setEmail(rs.getString("email"));
+                    memberDto.setJoinDate(rs.getString("joined_at"));
+                    memberDto.setPhone(String.valueOf(rs.getInt("phone_number")));
+                    return memberDto;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
 	}
-    
-    	
+
+    @Override
+    public int modify(MemberDto member) {
+        String sql = "UPDATE members "
+                + "SET nickname = ?, "
+                + "member_id = ?, "
+                + "name = ?, "
+                + "email = ?, "
+                + "phone_number = ?, "
+                + "password = ? "
+                + "WHERE id = ?";
+
+        try (Connection conn = DBUtil.getInstance().getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // SQL 쿼리의 ?에 값 설정
+            pstmt.setString(1, member.getNickname());
+            pstmt.setString(2, member.getUserId());
+            pstmt.setString(3, member.getName());
+            pstmt.setString(4, member.getEmail());
+            pstmt.setString(5, member.getPhone());
+            pstmt.setString(6, member.getPassword());
+            pstmt.setInt(7, member.getId());
+
+            // 업데이트 실행
+            return pstmt.executeUpdate(); // 업데이트된 행의 수 반환
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // 예외 처리
+            return 0; // 예외 발생 시 0을 반환
+        }
+    }
+
+
+
 }
 

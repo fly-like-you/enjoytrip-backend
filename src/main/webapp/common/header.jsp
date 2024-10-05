@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
-<c:set var="root" value="${pageContext.request.contextPath}"></c:set>
+<c:set var="root" value="${pageContext.request.contextPath}"/>
 
 <nav class="navbar navbar-expand-lg bg-light">
+
   <div class="container">
     <button
       class="navbar-toggler"
@@ -29,20 +30,27 @@
         <a class="nav-link" href="${root}/review">관광지 리뷰</a>
       </div>
       <div class="user-menu before-login">
-        <a class="login-button menu-item" type="button" href="${root}/member?action=login"
-          >로그인</a
-        >
-        <a class="join-button menu-item" type="button" href="${root}/member?action=join"
-          >회원가입</a
-        >
-        <a class="join-button menu-item" type="button" href="${root}/member?action=modify"
-          >정보수정</a
-        >
-      </div>
-      <div class="user-menu after-login hidden">
-        <a href="#" onclick="logout()">로그아웃</a>
-        <a href="#">마이페이지</a>
-        <a href="#" onclick="openPollmake()">관리자</a>
+        <c:choose>
+          <c:when test="${not empty sessionScope.member}">
+            안녕하세요, ${sessionScope.member.nickname}님!
+            <a class="login-button menu-item" type="button" href="${root}/member?action=logout"
+            >로그아웃</a
+            >
+            <a class="join-button menu-item" type="button" href="${root}/member?action=mvModify&member-id=${sessionScope.member.id}"
+            >정보수정</a
+            >
+          </c:when>
+          <c:otherwise>
+            <a class="login-button menu-item" type="button" href="${root}/member?action=mvLogin"
+            >로그인</a
+            >
+            <a class="join-button menu-item" type="button" href="${root}/member?action=mvJoin"
+            >회원가입</a
+            >
+          </c:otherwise>
+        </c:choose>
+
+
       </div>
     </div>
   </div>
