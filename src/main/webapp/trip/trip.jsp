@@ -159,8 +159,6 @@
       type="text/javascript"
       src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bbcd0f91614428569cebd399155f81df&libraries=services,clusterer,drawing"
     ></script>
-    <script src="
-    /assets/js/includeHTML.js"></script>
     <script src="./assets/js/global.js"></script>
     <script src="./assets/js/key.js"></script>
 

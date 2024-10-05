@@ -13,8 +13,8 @@ function searchParam(urltemp, key) {
 // 검색 버튼을 누르면..
 // 위 데이터를 가지고 공공데이터에 요청.
 function paintTable(contentTypeId, keyword) {
-  let baseUrl = `https://apis.data.go.kr/B551011/KorService1/`;
-  let queryString = `serviceKey=${serviceKey}&numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json&listYN=Y&arrange=A`;
+  let baseUrl = `http://localhost:8080/enjoy_trip/api/attraction`;
+  let queryString = `numOfRows=10&pageNo=1`;
   let areaCode = searchParam(window.location.search, "id");
   document.getElementById("trip-area-id").value = areaCode;
 
@@ -22,19 +22,13 @@ function paintTable(contentTypeId, keyword) {
   if (parseInt(areaCode)) queryString += `&areaCode=${areaCode}`;
   if (parseInt(contentTypeId)) queryString += `&contentTypeId=${contentTypeId}`;
 
-  let service = ``;
-  if (keyword) {
-    service = `searchKeyword1`;
-    queryString += `&keyword=${keyword}`;
-  } else {
-    service = `areaBasedList1`;
-  }
-  let searchUrl = baseUrl + service + "?" + queryString;
-
+  let searchUrl = baseUrl + "?" + queryString;
+  console.log("여행 검색 URL: " + searchUrl);
   fetch(searchUrl)
-    .then((response) => response.json())
-    .then((data) => paintSpotList(data.response.body.items.item));
+      .then((response) => response.json())
+      .then((data) => paintSpotList(data.attractions));
 }
+
 function paintHeader(code) {
   // id를 받아서 h1에 그려주기
   document.querySelector(`#trip-area-head`).textContent = `${cityCode[code]} 여행`;
@@ -48,14 +42,14 @@ function paintSpotList(data) {
     tripList += `
     <div class="d-flex w-100 justify-content-between align-items-center my-3 spot-list-item">
       <div class="d-flex">
-        <img src="${area.firstimage}" width="100%" />
+        <img src="${area.imgUrl}" width="100%" />
         <div>
-          <h6 id="title-${area.contentid}" class="mb-1">${area.title}</h6>
-          <p id="addr-${area.contentid}" class="mb-1">${area.addr1} ${area.addr2}</p>
-          <div class="d-none" id="mapy-${area.contentid}">${area.mapy}</div>
-          <div class="d-none" id="mapx-${area.contentid}">${area.mapx}</div>
-          <div class="d-none content-id" id="content-id-${area.contentid}">${area.contentid}</div>
-          <small id="area-type-${area.contentid}">${spotType[area.contenttypeid]}</small>
+          <h6 id="title-${area.id}" class="mb-1">${area.title}</h6>
+          <p id="addr-${area.id}" class="mb-1">${area.addr}</p>
+          <div class="d-none" id="mapy-${area.id}">${area.lat}</div>
+          <div class="d-none" id="mapx-${area.id}">${area.lng}</div>
+          <div class="d-none content-id" id="content-id-${area.id}">${area.id}</div>
+          <small id="area-type-${area.id}">${spotType[area.type]}</small>
           
         </div>
       </div>

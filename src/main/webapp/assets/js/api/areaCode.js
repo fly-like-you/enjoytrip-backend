@@ -1,7 +1,5 @@
 let areaUrl =
-  "https://apis.data.go.kr/B551011/KorService1/areaCode1?serviceKey=" +
-  serviceKey +
-  "&numOfRows=20&pageNo=1&MobileOS=ETC&MobileApp=EnjoyTrip&_type=json";
+  "http://localhost:8080/enjoy_trip/api/sido"
 
 fetch(areaUrl, { method: "GET" })
   .then(function (response) {
@@ -12,7 +10,7 @@ fetch(areaUrl, { method: "GET" })
   });
 
 function makeOption(data) {
-  let areas = data.response.body.items.item;
+  let areas = data;
   createCard(areas);
 }
 
@@ -24,8 +22,8 @@ function createCard(areaData) {
     const content = `
     <div class="col">
       <div class="card h-100 border-0">
-        <a href="trip?action=plan&id=${area.code}">
-          <img src="./assets/img/${area.code}.png" class="card-img-top" alt="${area.name}" />
+        <a href="trip?action=plan&id=${area.sidoCode}">
+          <img src="./assets/img/${area.sidoCode}.png" class="card-img-top" alt="${area.sidoName}" />
         </a>
       </div>
     </div>
