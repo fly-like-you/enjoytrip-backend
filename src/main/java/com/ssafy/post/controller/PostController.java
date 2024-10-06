@@ -73,10 +73,10 @@ public class PostController extends HttpServlet {
                 case "view":
                     viewPost(request, response);
                     break;
-                case "mvwrite":
+                case "mvWrite":
                     moveToWritePage(request, response);
                     break;
-                case "mvmodify":
+                case "mvModify":
                     moveToModifyPage(request, response);
                     break;
                 default:
@@ -164,7 +164,7 @@ public class PostController extends HttpServlet {
     }
 
     private void moveToWritePage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/views/post/write.jsp").forward(request, response);
+        request.getRequestDispatcher("/post/postWrite.jsp").forward(request, response);
     }
 
     private void moveToModifyPage(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -249,6 +249,8 @@ public class PostController extends HttpServlet {
             PostDto existingPost = postService.findById(postId);
             
             if (existingPost == null || existingPost.getMemberId() != memberDto.getId()) {
+                System.out.println(existingPost.getMemberId());
+                System.out.println(memberDto.getId());
                 sendErrorResponse(response, HttpServletResponse.SC_FORBIDDEN, "You don't have permission to modify this post");
                 return;
             }

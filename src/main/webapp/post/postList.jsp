@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<c:set var="root" value="${pageContext.request.contextPath}"/>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -93,7 +95,7 @@
     <h1>여행 경로 게시글</h1>
 
     <div class="search-container">
-        <button class="write-btn" onclick="location.href='post/postWrite.jsp'">게시글 작성하기</button>
+        <button class="write-btn" onclick="location.href='${root}/post?action=mvWrite'">게시글 작성하기</button>
         <div>
             <select>
                 <option value="title">제목조건</option>
