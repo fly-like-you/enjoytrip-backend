@@ -1,8 +1,10 @@
-// index page 로딩 후 전국의 시도 설정.
-let areaUrl =
-  "https://apis.data.go.kr/B551011/KorService1/areaCode1?serviceKey=" +
-  serviceKey +
-  "&numOfRows=20&pageNo=1&MobileOS=ETC&MobileApp=EnjoyTrip&_type=json";
+import { getSelectedPlaceIds } from './select_place.mjs';
+import { postSelectedPlaces } from './trip_api.mjs';
+
+document.querySelector("#trip-submit").addEventListener("click", function () {
+  const placeIds = getSelectedPlaceIds();
+  postSelectedPlaces(placeIds);
+});
 
 paintTable();
 

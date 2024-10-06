@@ -1,11 +1,20 @@
+selectedPlace = [];
+
 document.getElementById("spot-list").addEventListener(
   "click",
   function (event) {
     let list = document.getElementById("selected-places");
     // 클릭된 요소가 버튼인지 확인합니다
     if (event.target.tagName === "BUTTON") {
-      // 클릭된 버튼의 부모 노드를 가져옵니다
       const parentLi = event.target.parentNode;
+      const placeId = parentLi.querySelector(".content-id").textContent.trim();
+
+      if (selectedPlace.includes(placeId)) {
+        return;
+      }
+      selectedPlace.push(placeId);
+      // 클릭된 버튼이 현재 selectPlace의 아이디와 중복되면 추가하지않고 종료합니다.
+      console.log(parentLi);
 
       // 부모 노드를 복사합니다
       const newLi = mapping(parentLi.cloneNode(true));

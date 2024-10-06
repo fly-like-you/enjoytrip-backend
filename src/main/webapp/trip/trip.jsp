@@ -34,20 +34,23 @@
       <section class="d-flex" style="height: 100vh">
         <!-- 왼쪽 사이드바: 계획 단계 -->
         <section class="side-bar row" style="width: 1000px">
-          <div class="col-md-2 d-none d-lg-block">
+          <div class="col-md-2 d-none d-lg-block d-flex flex-column justify-content-between">
             <div class="list-group">
               <a href="${root}/main"
-                ><img
-                  class="mb-5 mt-3"
-                  src="./assets/img/EnjoyTrip.png"
-                  alt="logo"
-                  width="130px"
+              ><img
+                      class="mb-5 mt-3"
+                      src="./assets/img/EnjoyTrip.png"
+                      alt="logo"
+                      width="130px"
               /></a>
               <a href="#" class="list-group-item list-group-item-action active"
-                >STEP 1<br />동선 짜기</a
+              >STEP 1<br />동선 짜기</a
               >
             </div>
+            <button class="btn btn-primary mt-3 mb-3" id="trip-submit">선택 완료</button>
           </div>
+
+
 
           <!-- 중간 사이드바: 관광지 검색 및 목록 -->
           <div class="col-md-5">
@@ -161,11 +164,11 @@
     ></script>
     <script src="./assets/js/global.js"></script>
     <script src="./assets/js/key.js"></script>
-
-    <script src="./assets/js/trip.js"></script>
-    <script src="./assets/js/move_spot_item.js"></script>
-    <script src="./assets/js/spot_drag.js"></script>
-    <script src="./assets/js/spot_remove.js"></script>
     <script src="./assets/js/api/kakaoMap.js"></script>
+
+    <script type="module" src="./trip/trip.mjs"></script>
+    <script src="./trip/move_spot_item.js"></script>
+    <script src="./trip/spot_drag.js"></script>
+    <script src="./trip/spot_remove.js"></script>
   </body>
 </html>

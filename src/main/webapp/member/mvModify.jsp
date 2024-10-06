@@ -80,7 +80,7 @@
                   <button type="submit" class="btn btn-info btn-next text-white">확인</button>
                 </div>
                 <div class="mt-3 text-center join">
-                  <a href="${root}/member?action=mvLogin" class="text-info"><small>로그인 화면 가기</small></a>
+                  <a href="${root}/member?action=resign&id=${member.id}" class="text-danger"><small>회원 탈퇴</small></a>
                 </div>
               </form>
             </div>

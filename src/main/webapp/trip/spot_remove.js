@@ -7,6 +7,13 @@ function removeAndPaint(event) {
   parent.remove();
   const spotList = document.querySelector(".draggable");
 
+  console.log("removeAndPaint: ", parent);
+  // 선택된 장소 배열에서 해당 ID 제거
+  const index = selectedPlace.indexOf(id);
+  if (index > -1) {
+    selectedPlace.splice(index, 1);
+  }
+
   refreshPosition();
   paintLine();
   removeMarker();
