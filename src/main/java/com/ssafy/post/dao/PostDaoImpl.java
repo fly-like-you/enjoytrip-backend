@@ -111,7 +111,7 @@ public class PostDaoImpl implements PostDao {
     @Override
     public PostDto findById(Integer postId) {
         String sql =
-                  "SELECT p.id, title, content, created_at, updated_at, m.nickname\n"
+                  "SELECT p.id, title, p.member_id, content, created_at, updated_at, m.nickname\n"
                 + "FROM posts p INNER JOIN members m\n"
                 + "ON p.member_id = m.id\n"
                 + "WHERE p.id = ?";
@@ -123,15 +123,17 @@ public class PostDaoImpl implements PostDao {
             pstmt.setInt(1, postId);
 
             try (ResultSet rs = pstmt.executeQuery()) {
+                PostDto postDto = new PostDto();
                 if (rs.next()) {
-                    Integer id = rs.getInt("id");
-                    String title = rs.getString("title");
-                    String content = rs.getString("content");
-                    String author = rs.getString("nickname");
-                    Timestamp createdAt = rs.getTimestamp("created_at");
-                    Timestamp updatedAt = rs.getTimestamp("updated_at");
+                    postDto.setId(rs.getInt("id"));
+                    postDto.setMemberId(rs.getInt("member_id"));
+                    postDto.setTitle(rs.getString("title"));
+                    postDto.setContent(rs.getString("content"));
+                    postDto.setAuthor(rs.getString("nickname"));
+                    postDto.setCreatedAt(rs.getTimestamp("created_at"));
+                    postDto.setUpdatedAt(rs.getTimestamp("updated_at"));
 
-                    return new PostDto(id, title, author, content, createdAt, updatedAt);
+                    return postDto;
                 }
             }
         } catch (SQLException e) {

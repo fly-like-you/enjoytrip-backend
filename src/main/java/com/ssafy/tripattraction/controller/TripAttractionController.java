@@ -45,7 +45,7 @@ public class TripAttractionController extends HttpServlet {
         // tripAttraction?action=read&id=${trip.id}
         TripDto trip = tripService.findById(tripId);
         TripAttractionsDto tripAttractionsDto = tripAttractionService.searchTripAttractionsByTripId(tripId);
-        System.out.println(tripAttractionsDto.getTripAttractions().get(0));
+
         // 3. view 반환
         request.setAttribute("tripAttractions", tripAttractionsDto.getTripAttractions());
         request.setAttribute("trip", trip);

@@ -49,7 +49,7 @@ public class PostController extends HttpServlet {
         MemberDto memberDto = (MemberDto) session.getAttribute("member");
         
         if (memberDto == null) {
-            response.sendRedirect(request.getContextPath() + "/member/login.jsp");
+            response.sendRedirect(request.getContextPath() + "/member?action=mvLogin");
             return;
         }
 
@@ -286,7 +286,8 @@ public class PostController extends HttpServlet {
                 request.getRequestDispatcher("/post?action=list").forward(request, response);
                 return;
             }
-
+            System.out.println(existingPost.getMemberId());
+            System.out.println(memberDto);
             // 권한 체크
             if (!existingPost.getMemberId().equals(memberDto.getId())) {
                 request.setAttribute("errorMessage", "게시글을 삭제할 권한이 없습니다.");

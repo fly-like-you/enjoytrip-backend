@@ -47,7 +47,7 @@
               >STEP 1<br />동선 짜기</a
               >
             </div>
-            <button class="btn btn-primary mt-3 mb-3" id="trip-submit">선택 완료</button>
+            <a href="${root}/member?action=myPage" class="btn btn-primary mt-3 mb-3" id="trip-submit">선택 완료</a>
           </div>
 
 

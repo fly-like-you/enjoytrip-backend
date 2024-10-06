@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+
 <c:set var="root" value="${pageContext.request.contextPath}"/>
 
 <!DOCTYPE html>
@@ -91,6 +92,7 @@
     </style>
 </head>
 <body>
+
 <div class="container">
     <h1>여행 경로 게시글</h1>
 
@@ -147,5 +149,6 @@
         <a href="#">다음</a>
     </div>
 </div>
+
 </body>
 </html>

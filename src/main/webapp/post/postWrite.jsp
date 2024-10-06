@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -81,6 +82,7 @@
 </style>
 </head>
 <body>
+
 <div class="container">
     <h1>게시글 작성</h1>
     
@@ -90,7 +92,7 @@
     <input type="hidden" name="createdAt" id="createdAt">
     <input type="text" name="title" placeholder="제목" required>
     <textarea name="content" placeholder="내용" rows="10" required></textarea>
-    
+
     <div class="btn-container">
         <div>
             <button type="submit" class="btn">작성하기</button>

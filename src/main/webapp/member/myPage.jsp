@@ -15,19 +15,29 @@
             <h2 class="text-center">여행 계획 확인</h2>
             <hr />
             <div class="row">
-                <c:forEach var="trip" items="${trips}">
-                    <div class="col-md-4 mb-4">
-                        <div class="card" style="width: 300px; height: 300px;">
-                            <div class="card-body">
-                                <h5 class="card-title">${trip.name}</h5>
-                                <p class="card-text">시작일: ${trip.startDate}</p>
-                                <p class="card-text">종료일: ${trip.endDate}</p>
-                                <p class="card-text">생성 날짜: ${trip.createdAt}</p>
-                                <a href="${root}/tripAttraction?action=read&tripId=${trip.id}" class="btn btn-primary">자세히 보기</a>
-                            </div>
+                <c:choose>
+                    <c:when test="${empty trips}">
+                        <div class="alert alert-info text-center my-5">
+                            <p>여행 계획이 없습니다 ㅜㅜ 만들어보시는 건 어때요?</p>
+                            <a href="${root}/main" class="btn btn-primary">계획 만들러 가기</a>
                         </div>
-                    </div>
-                </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <c:forEach var="trip" items="${trips}">
+                            <div class="col-md-4 mb-4">
+                                <div class="card" style="width: 300px; height: 300px;">
+                                    <div class="card-body">
+                                        <h5 class="card-title">${trip.name}</h5>
+                                        <p class="card-text">시작일: ${trip.startDate}</p>
+                                        <p class="card-text">종료일: ${trip.endDate}</p>
+                                        <p class="card-text">생성 날짜: ${trip.createdAt}</p>
+                                        <a href="${root}/tripAttraction?action=read&tripId=${trip.id}" class="btn btn-primary">자세히 보기</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </c:otherwise>
+                </c:choose>
 
             </div>
         </section>
