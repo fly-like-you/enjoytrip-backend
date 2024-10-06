@@ -28,6 +28,7 @@
         <a class="nav-link" href="${root}/spot"> 관광지 탐방</a>
 
         <a class="nav-link" href="${root}/review">관광지 리뷰</a>
+        <a class="nav-link" href="${root}/post?action=list">게시글 보기</a>
       </div>
       <div class="user-menu before-login">
         <c:choose>
@@ -38,6 +39,9 @@
             >
             <a class="join-button menu-item" type="button" href="${root}/member?action=mvModify&member-id=${sessionScope.member.id}"
             >정보수정</a
+            >
+            <a class="join-button menu-item" type="button" href="${root}/member?action=myPage"
+            >마이 페이지</a
             >
           </c:when>
           <c:otherwise>
