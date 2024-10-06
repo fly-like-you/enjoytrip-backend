@@ -22,7 +22,7 @@ public interface MemberDao {
     MemberDto findById(String memberId);
     
     // 회원 탈퇴 메서드 추가
-    boolean deleteMember(String memberId);
+    boolean deleteMember(String id);
     
 	int idCheck(String userId) throws SQLException;
 	MemberDto loginMember(String userId, String userPwd) throws SQLException;

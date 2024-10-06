@@ -54,5 +54,10 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.modify(member);
 	}
 
+	@Override
+	public boolean resign(String id) {
+		return memberDao.deleteMember(id);
+	}
+
 
 }

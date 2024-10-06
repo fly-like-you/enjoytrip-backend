@@ -10,4 +10,6 @@ public interface MemberService {
 	MemberDto findById(String memberId);
 
 	int modify(MemberDto member);
+	boolean resign(String id);
+
 }

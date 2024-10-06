@@ -144,12 +144,12 @@ public class MemberDaoImpl implements MemberDao {
 
     // 새로 추가된 deleteMember 메서드
     @Override
-    public boolean deleteMember(String memberId) {
-        String sql = "DELETE FROM members WHERE member_id = ?";
+    public boolean deleteMember(String id) {
+        String sql = "DELETE FROM members WHERE id = ?";
         try (Connection conn = DBUtil.getInstance().getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             
-            pstmt.setString(1, memberId);
+            pstmt.setString(1, id);
             int affectedRows = pstmt.executeUpdate();
             return affectedRows > 0;
         } catch (SQLException e) {

@@ -8,6 +8,7 @@ import com.ssafy.post.model.PostSummariesDto;
 import com.ssafy.post.model.PostSummaryDto;
 import com.ssafy.post.model.PostsDto;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 import util.TestUtil;
 
@@ -39,8 +40,8 @@ public class PostDaoTest {
                 tempUserId,
                 "temp",
                 "temp content",
-                new Date(System.currentTimeMillis()),
-                new Date(System.currentTimeMillis())
+                new Timestamp(System.currentTimeMillis()),
+                new Timestamp(System.currentTimeMillis())
         );
 
         return postDao.createPost(post);

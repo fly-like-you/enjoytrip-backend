@@ -1,5 +1,8 @@
 package com.ssafy.member.controller;
 
+import com.ssafy.trip.model.TripsDto;
+import com.ssafy.trip.service.TripService;
+import com.ssafy.trip.service.TripServiceImpl;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -17,6 +20,7 @@ import java.time.LocalDate;
 @WebServlet("/member")
 public class MemberController extends HttpServlet {
 	private static MemberService memberService = MemberServiceImpl.getInstance();
+	private static TripService tripService = TripServiceImpl.getInstance();
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -45,6 +49,20 @@ public class MemberController extends HttpServlet {
 		}
 	}
 
+	private String resign(HttpServletRequest request, HttpServletResponse response) {
+		String id = request.getParameter("id");
+		if (!memberService.resign(id)) {
+			System.out.println("회원 탈퇴 실패 ㅜ");
+			return "/error/error.jsp";
+		}
+
+		// logout
+		HttpSession session = request.getSession();
+		session.invalidate();
+		System.out.println("회원 탈퇴 성공!!");
+		return "/main";
+	}
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getParameter("action");
 		String path = "";
@@ -69,6 +87,14 @@ public class MemberController extends HttpServlet {
 					path = logout(request, response);
 					redirect(request, response, path);
 					break;
+				case "resign":
+					path = resign(request, response);
+					redirect(request, response, path);
+					break;
+				case "myPage":
+					path = myPage(request, response);
+					forward(request, response, path);
+					break;
 				default:
 					redirect(request, response, path);
 			}
@@ -77,7 +103,21 @@ public class MemberController extends HttpServlet {
 
 		}
 	}
-	
+
+	private String myPage(HttpServletRequest request, HttpServletResponse response) {
+		MemberDto member = (MemberDto) request.getSession().getAttribute("member");
+		if (member == null) return "/member/login.jsp";
+
+		// 1. 요청 파라미터
+		// 2. DB 접속
+		TripsDto trips = tripService.findByMemberId(member.getId());
+		System.out.println(trips.getTrips());
+
+		// 3. 뷰 반환
+		request.setAttribute("trips", trips.getTrips());
+		return "/member/myPage.jsp";
+	}
+
 	private String modify(HttpServletRequest request, HttpServletResponse response) {
 		// 1. 요청 파라미터
 		System.out.println("--------- 유저 회원정보 수정 요청 ---------");
