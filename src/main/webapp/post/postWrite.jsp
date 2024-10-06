@@ -84,21 +84,20 @@
 <div class="container">
     <h1>게시글 작성</h1>
     
-    <form action="/enjoy_trip/post?action=write" method="post" onsubmit="setCreatedAt()">
-        <input type="hidden" name="action" value="write">
-        <input type="hidden" name="author" value="${sessionScope.username}">
-        <input type="hidden" name="createdAt" id="createdAt">
-        <input type="text" name="title" placeholder="제목" required>
-        <textarea name="content" placeholder="내용" rows="10" required></textarea>
-        
-        <div class="btn-container">
-            <div>
-                <button type="submit" class="btn">작성하기</button>
-                <a href="/enjoy_trip/post?action=list" class="btn">목록으로</a>
-            </div>
-            
+    <form action="${pageContext.request.contextPath}/post" method="post" onsubmit="setCreatedAt()">
+    <input type="hidden" name="action" value="write">
+    <input type="hidden" name="author" value="${sessionScope.username}">
+    <input type="hidden" name="createdAt" id="createdAt">
+    <input type="text" name="title" placeholder="제목" required>
+    <textarea name="content" placeholder="내용" rows="10" required></textarea>
+    
+    <div class="btn-container">
+        <div>
+            <button type="submit" class="btn">작성하기</button>
+            <a href="${pageContext.request.contextPath}/post?action=list" class="btn">목록으로</a>
         </div>
-    </form>
+    </div>
+</form>
 </div>
 
 <script>

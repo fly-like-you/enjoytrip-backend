@@ -5,24 +5,34 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Map;
 import java.sql.Timestamp;
 import java.text.ParseException;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import com.ssafy.member.model.MemberDto;
 import com.ssafy.post.model.PostDto;
 import com.ssafy.post.model.PostsDto;
 import com.ssafy.post.service.PostService;
 import com.ssafy.post.service.PostServiceImpl;
 
+
 @WebServlet("/post")
 public class PostController extends HttpServlet {
-    
+	private int pgno;
+	private String key;
+	private String word;
+	private String queryStrig;
+	
     private PostService postService;
     private ObjectMapper objectMapper;
     
@@ -35,7 +45,20 @@ public class PostController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        MemberDto memberDto = (MemberDto) session.getAttribute("member");
+        
+        if (memberDto == null) {
+            response.sendRedirect(request.getContextPath() + "/member/login.jsp");
+            return;
+        }
+
         String action = request.getParameter("action");
+    	
+    	pgno = util.ParameterCheck.notNumberToOne(request.getParameter("pgno"));
+		key = util.ParameterCheck.nullToBlank(request.getParameter("key"));
+		word = util.ParameterCheck.nullToBlank(request.getParameter("word"));
+		queryStrig = "pgno=" + pgno + "&key=" + key + "&word=" + URLEncoder.encode(word, "utf-8");
         
         if (action == null) {
             sendErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, "Action parameter is missing");
@@ -66,6 +89,14 @@ public class PostController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        MemberDto memberDto = (MemberDto) session.getAttribute("member");
+        
+        if (memberDto == null) {
+            response.sendRedirect(request.getContextPath() + "/member/login.jsp");
+            return;
+        }
+
         String action = request.getParameter("action");
         
         if (action == null) {
@@ -91,11 +122,23 @@ public class PostController extends HttpServlet {
             sendErrorResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
+    
 
     private void list(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        PostsDto posts = postService.searchPostsAll();
-        request.setAttribute("posts", posts);
-        request.getRequestDispatcher("/post/postList.jsp").forward(request, response);
+        try {
+            Map<String, String> map = new HashMap<String, String>();
+            map.put("pgno", pgno + "");
+            map.put("key", key);
+            map.put("word", word);
+            
+            PostsDto posts = postService.searchPostsAll();
+            request.setAttribute("posts", posts);
+            request.getRequestDispatcher("/post/postList.jsp").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("msg", "글목록 출력 중 문제 발생!!!");
+            request.getRequestDispatcher("/error/error.jsp").forward(request, response);
+        }
     }
 
     private void viewPost(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -104,13 +147,19 @@ public class PostController extends HttpServlet {
             sendErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, "Post ID is missing");
             return;
         }
-        int postId = Integer.parseInt(postIdStr);
-        PostDto post = postService.findById(postId);
-        if (post != null) {
-            request.setAttribute("post", post);
-            request.getRequestDispatcher("post/postContent.jsp").forward(request, response);
-        } else {
-            sendErrorResponse(response, HttpServletResponse.SC_NOT_FOUND, "Post not found");
+        try {
+            int postId = Integer.parseInt(postIdStr);
+            PostDto post = postService.findById(postId);
+            if (post != null) {
+                request.setAttribute("post", post);
+                request.getRequestDispatcher("post/postContent.jsp").forward(request, response);
+            } else {
+                sendErrorResponse(response, HttpServletResponse.SC_NOT_FOUND, "Post not found");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("msg", "글 조회 중 문제 발생!!!");
+            request.getRequestDispatcher("/error/error.jsp").forward(request, response);
         }
     }
 
@@ -124,35 +173,42 @@ public class PostController extends HttpServlet {
             sendErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, "Post ID is missing");
             return;
         }
-        int postId = Integer.parseInt(postIdStr);
-        PostDto post = postService.findById(postId);
-        if (post != null) {
-            request.setAttribute("post", post);
-            request.getRequestDispatcher("/WEB-INF/views/post/modify.jsp").forward(request, response);
-        } else {
-            sendErrorResponse(response, HttpServletResponse.SC_NOT_FOUND, "Post not found");
+        try {
+            int postId = Integer.parseInt(postIdStr);
+            PostDto post = postService.findById(postId);
+            if (post != null) {
+                request.setAttribute("post", post);
+                request.getRequestDispatcher("/WEB-INF/views/post/modify.jsp").forward(request, response);
+            } else {
+                sendErrorResponse(response, HttpServletResponse.SC_NOT_FOUND, "Post not found");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("msg", "글 수정 페이지 이동 중 문제 발생!!!");
+            request.getRequestDispatcher("/error/error.jsp").forward(request, response);
         }
     }
 
+
     private void writePost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        MemberDto memberDto = (MemberDto) session.getAttribute("member");
+        
+        if (memberDto == null) {
+            response.sendRedirect(request.getContextPath() + "/member/login.jsp");
+            return;
+        }
+        
         String title = request.getParameter("title");
         String content = request.getParameter("content");
         String createdAtString = request.getParameter("createdAt");
-        Integer memberId = (Integer) request.getSession().getAttribute("memberId");
         
-        if (memberId == null) {
-            request.setAttribute("errorMessage", "로그인이 필요합니다.");
-            request.getRequestDispatcher("/member/login.jsp").forward(request, response);
-            return;
-        }
-
         Timestamp createdAt;
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
             java.util.Date parsedDate = formatter.parse(createdAtString);
             createdAt = new Timestamp(parsedDate.getTime());
         } catch (ParseException e) {
-            // 파싱에 실패한 경우 현재 시간을 사용
             createdAt = new Timestamp(System.currentTimeMillis());
         }
 
@@ -160,7 +216,7 @@ public class PostController extends HttpServlet {
         postDto.setTitle(title);
         postDto.setContent(content);
         postDto.setCreatedAt(createdAt);
-        postDto.setMemberId(memberId);
+        postDto.setMemberId(memberDto.getId());  // Assuming MemberDto has getId() method
 
         try {
             Integer newPostId = postService.createPost(postDto);
@@ -168,14 +224,17 @@ public class PostController extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/post?action=list");
             } else {
                 request.setAttribute("errorMessage", "게시글 작성에 실패했습니다.");
-                request.getRequestDispatcher("/enjoy_trip/post?action=list").forward(request, response);
+                request.getRequestDispatcher("/post?action=list").forward(request, response);
             }
         } catch (Exception e) {
-            request.setAttribute("errorMessage", "게시글 작성 중 오류가 발생했습니다.");
-            request.getRequestDispatcher("/enjoy_trip/post?action=list").forward(request, response);
+            request.setAttribute("errorMessage", "게시글 작성 중 오류가 발생했습니다: " + e.getMessage());
+            request.getRequestDispatcher("/post?action=list").forward(request, response);
         }
     }
     private void modifyPost(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpSession session = request.getSession();
+        MemberDto memberDto = (MemberDto) session.getAttribute("member");
+        
         String postIdStr = request.getParameter("postId");
         String title = request.getParameter("title");
         String content = request.getParameter("content");
@@ -185,26 +244,53 @@ public class PostController extends HttpServlet {
             return;
         }
 
-        int postId = Integer.parseInt(postIdStr);
-        PostDto postDto = new PostDto();
-        postDto.setId(postId);
-        postDto.setTitle(title);
-        postDto.setContent(content);
+        try {
+            int postId = Integer.parseInt(postIdStr);
+            PostDto existingPost = postService.findById(postId);
+            
+            if (existingPost == null || existingPost.getMemberId() != memberDto.getId()) {
+                sendErrorResponse(response, HttpServletResponse.SC_FORBIDDEN, "You don't have permission to modify this post");
+                return;
+            }
 
-        postService.modifyPost(postDto);
-        // 수정 후 목록 페이지로 리다이렉트
-        response.sendRedirect(request.getContextPath() + "/post?action=list");
+            PostDto postDto = new PostDto();
+            postDto.setId(postId);
+            postDto.setTitle(title);
+            postDto.setContent(content);
+
+            postService.modifyPost(postDto);
+            response.sendRedirect(request.getContextPath() + "/post?action=list");
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("msg", "글 수정 중 문제 발생!!!");
+            request.getRequestDispatcher("/error/error.jsp").forward(request, response);
+        }
     }
-
     private void deletePost(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpSession session = request.getSession();
+        MemberDto memberDto = (MemberDto) session.getAttribute("member");
+        
         String postIdStr = request.getParameter("postId");
         if (postIdStr == null) {
             sendErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, "Post ID is missing");
             return;
         }
-        int postId = Integer.parseInt(postIdStr);
-        postService.deletePost(postId);
-        response.sendRedirect(request.getContextPath() + "/post?action=list");
+        try {
+            int postId = Integer.parseInt(postIdStr);
+            PostDto existingPost = postService.findById(postId);
+            
+            if (existingPost == null || existingPost.getMemberId() != memberDto.getId()) {
+                sendErrorResponse(response, HttpServletResponse.SC_FORBIDDEN, "You don't have permission to delete this post");
+                return;
+            }
+
+            postService.deletePost(postId);
+            response.sendRedirect(request.getContextPath() + "/post?action=list");
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("msg", "글 삭제 중 문제 발생!!!");
+            request.getRequestDispatcher("/error/error.jsp").forward(request, response);
+        }
     }
 
     private void sendErrorResponse(HttpServletResponse response, int status, String message) throws IOException {

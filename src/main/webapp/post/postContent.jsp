@@ -1,213 +1,40 @@
-<%@ page contentType="text/html; charset=UTF-8" language="java"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>${post.title}-여행이야기</title>
-<style>
-body {
-	font-family: 'Noto Sans KR', sans-serif;
-	background-color: #e6f3ff;
-	margin: 0;
-	padding: 0;
-	color: #333;
-}
-
-.container {
-	max-width: 800px;
-	margin: 40px auto;
-	background: white;
-	border-radius: 12px;
-	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-	overflow: hidden;
-}
-
-.post-header {
-	background-image: url('https://source.unsplash.com/1600x900/?travel');
-	background-size: cover;
-	background-position: center;
-	height: 300px;
-	position: relative;
-}
-
-.post-header::after {
-	content: '';
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background: rgba(0, 0, 0, 0.4);
-}
-
-.post-title {
-	position: absolute;
-	bottom: 20px;
-	left: 20px;
-	right: 20px;
-	color: white;
-	font-size: 2.5em;
-	font-weight: 700;
-	z-index: 1;
-}
-
-.post-meta {
-	background-color: #4a89dc;
-	color: #ffffff;
-	padding: 15px 20px;
-	font-size: 0.9em;
-	display: flex;
-	justify-content: space-between;
-}
-
-.post-content {
-	padding: 0; /* 패딩 제거 */
-	line-height: 1.6;
-	min-height: 300px;
-	background-color: #f9f9f9;
-	border: 1px solid #e0e0e0;
-	margin: 20px;
-	border-radius: 8px;
-	overflow: hidden; /* 내부 요소가 넘치지 않도록 */
-}
-
-.post-content textarea {
-	width: 100%;
-	min-height: 300px;
-	padding: 30px; /* div에 있던 패딩을 여기로 이동 */
-	border: none;
-	outline: none;
-	background: transparent;
-	font-size: 1.6em;
-	line-height: 1.6;
-	resize: vertical; /* 수직 리사이즈만 허용 */
-	font-family: inherit; /* 부모 요소의 폰트 상속 */
-}
-
-.post-title-display {
-	font-size: 1.5em;
-	font-weight: bold;
-	margin: 20px; /* 여백 추가 */
-	color: #333;
-}
-
-.post-content img {
-	max-width: 100%;
-	height: auto;
-	border-radius: 8px;
-	margin: 20px 0;
-}
-
-.btn-container {
-	display: flex;
-	justify-content: space-between;
-	padding: 20px;
-	background-color: #f0f4f8;
-}
-
-.btn {
-	padding: 12px 24px;
-	border: none;
-	border-radius: 25px;
-	cursor: pointer;
-	text-decoration: none;
-	font-weight: 600;
-	transition: all 0.3s ease;
-	text-transform: uppercase;
-	letter-spacing: 1px;
-}
-
-.btn-list {
-	background-color: #4a89dc; /* 하늘색 */
-	color: white;
-}
-
-.btn-list:hover {
-	background-color: #5d9cec;
-}
-
-.btn-edit {
-	background-color: #48cfad; /* 바다색 */
-	color: white;
-}
-
-.btn-edit:hover {
-	background-color: #5ddebd;
-}
-
-.btn-reset {
-	background-color: #f6bb42; /* 모래색 */
-	color: white;
-}
-
-.btn-reset:hover {
-	background-color: #ffce54;
-}
-
-.title-input {
-	width: 100%;
-	border: none;
-	background: transparent;
-	font-size: 1em;
-	padding: 0;
-	margin: 0;
-	outline: none;
-}
-
-/* 제목 셀 스타일 수정 */
-td.title-cell {
-	padding: 0;
-}
-
-/* 링크 스타일 */
-.title-link {
-	display: block;
-	padding: 12px;
-	text-decoration: none;
-	color: inherit;
-}
-
-/* 호버 효과 */
-tr:hover {
-	background-color: #f8f8f8;
-}
-</style>
+    <meta charset="UTF-8">
+    <title>게시글 상세/수정</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { width: 80%; margin: 0 auto; }
+        input[type="text"], textarea { width: 100%; padding: 10px; margin: 10px 0; }
+        button { padding: 10px 20px; margin-right: 10px; }
+    </style>
 </head>
 <body>
     <div class="container">
-        <form action="${pageContext.request.contextPath}/post" method="post">
+        <h1>게시글 상세/수정</h1>
+        <form id="postForm" action="${pageContext.request.contextPath}/post" method="post">
             <input type="hidden" name="action" value="modify">
             <input type="hidden" name="postId" value="${post.id}">
-            <header class="post-header">
-                <h1 class="post-title">
-                    <input type="text" name="title" value="${post.title}"
-                        style="border: none; outline: none; background: transparent; color: white; font-size: 2.5em; font-weight: 700;"
-                        required>
-                </h1>
-            </header>
-            <div class="post-meta">
-                <span>작성자: ${post.author}</span>
-                <span>작성일: <fmt:formatDate value="${post.createdAt}" pattern="yyyy-MM-dd HH:mm" /></span>
-            </div>
-            <div class="post-content">
-                <textarea name="content" style="border: none; outline: none; background: transparent; width: 100%; height: auto; font-size: 1.6em;">${post.content}</textarea>
-            </div>
-            <div class="btn-container">
-                <a href="${pageContext.request.contextPath}/post?action=list" class="btn btn-list">목록으로</a>
-                <div>
-                    <button type="submit" class="btn btn-edit">수정하기</button>
-                    <button type="button" class="btn btn-reset" onclick="resetForm()">초기화</button>
-                </div>
-            </div>
+            
+            <label for="title">제목:</label>
+            <input type="text" id="title" name="title" value="${post.title}" required>
+            
+            <label for="content">내용:</label>
+            <textarea id="content" name="content" rows="10" required>${post.content}</textarea>
+            
+            <label for="author">작성자:</label>
+            <input type="text" id="author" name="author" value="${post.author}" readonly>
+            
+            <label for="createdAt">작성일:</label>
+            <input type="text" id="createdAt" name="createdAt" value="<fmt:formatDate value="${post.createdAt}" pattern="yyyy-MM-dd HH:mm:ss" />" readonly>
+            
+            <button type="submit">수정하기</button>
+            <button type="button" onclick="location.href='${pageContext.request.contextPath}/post?action=list'">목록으로</button>
         </form>
     </div>
-    <script>
-        function resetForm() {
-            document.querySelector('input[name="title"]').value = '${post.title}';
-            document.querySelector('textarea[name="content"]').value = '${post.content}';
-        }
-    </script>
 </body>
 </html>
