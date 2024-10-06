@@ -33,8 +33,16 @@
             <input type="text" id="createdAt" name="createdAt" value="<fmt:formatDate value="${post.createdAt}" pattern="yyyy-MM-dd HH:mm:ss" />" readonly>
             
             <button type="submit">수정하기</button>
+            <button type="button" onclick="deletePost()">삭제하기</button>
             <button type="button" onclick="location.href='${pageContext.request.contextPath}/post?action=list'">목록으로</button>
         </form>
     </div>
+    <script>
+        function deletePost() {
+            if (confirm('정말로 이 게시글을 삭제하시겠습니까?')) {
+                location.href = '${pageContext.request.contextPath}/post?action=delete&postId=${post.id}';
+            }
+        }
+    </script>
 </body>
 </html>
