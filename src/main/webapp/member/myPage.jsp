@@ -23,7 +23,7 @@
                                 <p class="card-text">시작일: ${trip.startDate}</p>
                                 <p class="card-text">종료일: ${trip.endDate}</p>
                                 <p class="card-text">생성 날짜: ${trip.createdAt}</p>
-                                <a href="#" class="btn btn-primary">자세히 보기</a>
+                                <a href="${root}/tripAttraction?action=read&tripId=${trip.id}" class="btn btn-primary">자세히 보기</a>
                             </div>
                         </div>
                     </div>
