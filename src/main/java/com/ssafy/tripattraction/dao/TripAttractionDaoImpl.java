@@ -21,10 +21,10 @@ public class TripAttractionDaoImpl implements TripAttractionDao {
     }
 
     // tripAttractions 테이블에 데이터를 추가하는 메서드
-    @Override
     public Integer createTripAttraction(TripAttractionDto tripAttractionDto) {
-        String sql = "INSERT INTO tripAttractions (trip_id, attraction_id, `order`) VALUES (?, ?, ?)";
-        
+        String sql = "INSERT INTO tripAttractions (trip_id, attraction_id, `order`) " +
+                "SELECT ?, a.no, ? FROM attractions a WHERE a.content_id = ?";
+
         try (
                 Connection conn = DBUtil.getInstance().getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(
@@ -35,8 +35,8 @@ public class TripAttractionDaoImpl implements TripAttractionDao {
 
             // PreparedStatement에 값 설정
             pstmt.setInt(1, tripAttractionDto.getTripId());
-            pstmt.setInt(2, tripAttractionDto.getAttractionId());
-            pstmt.setInt(3, tripAttractionDto.getOrder());
+            pstmt.setInt(2, tripAttractionDto.getOrder());
+            pstmt.setInt(3, tripAttractionDto.getAttractionId());
 
             // 쿼리 실행
             int affectedRows = pstmt.executeUpdate();
@@ -52,6 +52,7 @@ public class TripAttractionDaoImpl implements TripAttractionDao {
 
         return -1;
     }
+
 
     public TripAttractionsDto searchTripAttractionsByTripId(Integer tripId) {
         String sql =

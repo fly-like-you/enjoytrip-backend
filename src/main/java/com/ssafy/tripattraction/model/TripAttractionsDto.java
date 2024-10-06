@@ -21,4 +21,11 @@ public class TripAttractionsDto {
     public void addTripAttraction(TripAttractionDto tripAttractionDto) {
         tripAttractions.add(tripAttractionDto);
     }
+
+    @Override
+    public String toString() {
+        return "TripAttractionsDto{" +
+                "tripAttractions=" + tripAttractions +
+                '}';
+    }
 }
